@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "esnext",
+    "noEmitOnError": true,
+    "strict": true,
+    "esModuleInterop": false,
+    "outDir": "./dist",
+    "declaration": true,
+    "rootDir": "./"
+  },
+  "include": ["./src/**/*.ts"]
+}

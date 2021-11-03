@@ -1,0 +1,19 @@
+{
+  "name": "text-animator",
+  "version": "1.0.0",
+  "description": "A tool for creating text animations in the browser",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "author": "Joshua Mark Hume",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^4.4.4"
+  },
+  "files": [
+    "/dist"
+  ]
+}
