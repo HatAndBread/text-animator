@@ -1,11 +1,14 @@
 declare type Options = {
     fps?: number;
     frames: string[][];
+    div?: HTMLDivElement;
     fontSize?: number;
     fontFamily?: string;
     fontStyle?: string;
+    fontColor?: string;
     pixelWidth?: number;
     pixelHeight?: number;
+    backgroundColor?: string;
 };
 declare class Animation {
     fps: number;
@@ -14,10 +17,14 @@ declare class Animation {
     fontSize: number;
     fontFamily: string;
     fontStyle: string;
+    fontColor: string;
     frames: string[][];
+    backgroundColor: string;
     frameNodes: HTMLDivElement[];
-    node: HTMLDivElement;
+    div: HTMLDivElement;
     playing: boolean;
+    _frameNumber: number;
+    _iteration: number;
     constructor(options: Options);
     create(): void;
     play(): void;

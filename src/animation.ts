@@ -1,11 +1,14 @@
 type Options = {
   fps?: number;
   frames: string[][];
+  div?: HTMLDivElement;
   fontSize?: number;
   fontFamily?: string;
   fontStyle?: string;
+  fontColor?: string;
   pixelWidth?: number;
   pixelHeight?: number;
+  backgroundColor?: string;
 };
 
 class Animation {
@@ -15,10 +18,14 @@ class Animation {
   fontSize: number;
   fontFamily: string;
   fontStyle: string;
+  fontColor: string;
   frames: string[][];
+  backgroundColor: string;
   frameNodes: HTMLDivElement[];
-  node: HTMLDivElement;
+  div: HTMLDivElement;
   playing: boolean;
+  _frameNumber: number;
+  _iteration: number;
   constructor(options: Options) {
     if (options.fps && options.fps > 60) options.fps = 60;
     if (options.fps && options.fps < 1) options.fps = 1;
@@ -27,17 +34,24 @@ class Animation {
     this.pixelHeight = options.pixelHeight || 30;
     this.fontSize = options.fontSize || 30;
     this.fontStyle = options.fontStyle || '';
-    this.fontFamily = options.fontFamily || 'monospace';
+    this.fontFamily = options.fontFamily || '';
+    this.fontColor = options.fontColor || '';
+    this.backgroundColor = options.backgroundColor || '';
     this.frames = options.frames;
-    this.node = document.createElement('div');
+    this.div = options.div || document.createElement('div');
     this.frameNodes = [];
     this.playing = false;
+    this._frameNumber = 0;
+    this._iteration = 0;
   }
   create() {
     const animationStyle = {
-      //position: 'fixed',
+      backgroundColor: this.backgroundColor,
+      color: this.fontColor,
+      width: 'fit-content',
     };
-    _setElementStyle(this.node, animationStyle);
+    this.div.innerHTML = '';
+    _setElementStyle(this.div, animationStyle);
     for (let i = 0; i < this.frames.length; i++) {
       const frame = document.createElement('div');
       for (let j = 0; j < this.frames[i].length; j++) {
@@ -67,25 +81,29 @@ class Animation {
   }
   play() {
     this.playing = true;
-    let frameNumber = 0;
-    let i = 1;
     const loop = () => {
-      if (!(i % this.fps)) {
-        if (frameNumber >= this.frameNodes.length) frameNumber = 0;
-        this.node.innerHTML = '';
-        this.node.insertAdjacentElement('beforeend', this.frameNodes[frameNumber]);
-        frameNumber++;
-        i = 1;
+      if (!(this._iteration % this.fps)) {
+        if (this._frameNumber >= this.frameNodes.length) this._frameNumber = 0;
+        this.div.innerHTML = '';
+        this.div.insertAdjacentElement('beforeend', this.frameNodes[this._frameNumber]);
+        this._frameNumber++;
+        this._iteration = 1;
       }
       if (this.playing) {
-        i++;
+        this._iteration++;
         window.requestAnimationFrame(loop);
       }
     };
     loop();
   }
-  stop() {}
-  pause() {}
+  stop() {
+    this.playing = false;
+    this._iteration = 0;
+    this._frameNumber = 0;
+  }
+  pause() {
+    this.playing = false;
+  }
 }
 
 const _setElementStyle = (el: HTMLDivElement, styleObject: { [key: string]: string }) => {
