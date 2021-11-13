@@ -7,6 +7,7 @@ class Animation {
         this.fps = 61 - (options.fps || 30);
         this.pixelWidth = options.pixelWidth || 30;
         this.pixelHeight = options.pixelHeight || 30;
+        this.pixelStyles = options.pixelStyles;
         this.fontSize = options.fontSize || 30;
         this.fontStyle = options.fontStyle || '';
         this.fontFamily = options.fontFamily || '';
@@ -20,13 +21,13 @@ class Animation {
         this._iteration = 0;
     }
     create() {
-        const animationStyle = {
+        const baseStyle = {
             backgroundColor: this.backgroundColor,
             color: this.fontColor,
             width: 'fit-content',
         };
         this.div.innerHTML = '';
-        _setElementStyle(this.div, animationStyle);
+        _setElementStyle(this.div, baseStyle);
         for (let i = 0; i < this.frames.length; i++) {
             const frame = document.createElement('div');
             for (let j = 0; j < this.frames[i].length; j++) {
@@ -48,6 +49,9 @@ class Animation {
                         fontStyle: this.fontStyle,
                     };
                     _setElementStyle(pixel, pixelStyle);
+                    if (this.pixelStyles && this.pixelStyles[i] && this.pixelStyles[i][j] && this.pixelStyles[i][j][k]) {
+                        _setElementStyle(pixel, this.pixelStyles[i][j][k]);
+                    }
                     row.insertAdjacentElement('beforeend', pixel);
                 }
             }
@@ -55,6 +59,8 @@ class Animation {
         }
     }
     play() {
+        if (this.playing)
+            return;
         this.playing = true;
         const loop = () => {
             if (!(this._iteration % this.fps)) {

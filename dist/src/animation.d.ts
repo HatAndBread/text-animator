@@ -1,6 +1,9 @@
 declare type Options = {
     fps?: number;
     frames: string[][];
+    pixelStyles?: {
+        [key: string]: string;
+    }[][][] | any;
     div?: HTMLDivElement;
     fontSize?: number;
     fontFamily?: string;
@@ -14,6 +17,9 @@ declare class Animation {
     fps: number;
     pixelWidth: number;
     pixelHeight: number;
+    pixelStyles: {
+        [key: string]: any;
+    }[][][] | undefined | any;
     fontSize: number;
     fontFamily: string;
     fontStyle: string;
